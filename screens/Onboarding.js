@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, Header} from 'react-native';
+import {validateEmail} from '../utils/index';
 
 const Onboarding = ({ navigation }) => {
 
   const [firstName, onChangeFirstName] = React.useState('')
-  const [lastName, onChangeLastName] = React.useState('')
+//   const [lastName, onChangeLastName] = React.useState('')
+  const [email, onChangeEmail] = React.useState('')
+
 
   return (
     <View style={styles.container}>
@@ -12,10 +15,12 @@ const Onboarding = ({ navigation }) => {
     {/* <Image style={styles.logo} source={require('../assets/little-lemon-logo.png')} /> */}
     <Text style={styles.main}> Let us get to know you</Text>
     <TextInput value={firstName} placeholder="First Name" onChangeText={onChangeFirstName} style={styles.textInput}></TextInput>
-    <TextInput value={lastName} placeholder="Last Name" onChangeText={onChangeLastName} style={styles.textInput}></TextInput>
+    {/* <TextInput value={lastName} placeholder="Last Name" onChangeText={onChangeLastName} style={styles.textInput}></TextInput>
+     */}
+    <TextInput value={email} placeholder="Enter your email" onChangeText={onChangeEmail} style={styles.textInput}></TextInput>
     {/* <Text style={styles.lemon}>Little Lemon, your local Mediterranean bistro</Text> */}
     {/* <Pressable style={styles.newsletter} onPress={()=>navigation.navigate('S')}><Text style={styles.newsText}>Newsletter</Text></Pressable> */}
-    <Pressable style={styles.newsletter} onPress={()=>navigation.navigate('S')}><Text style={styles.newsText}>Next</Text></Pressable>
+    <Pressable disabled={!validateEmail(email) || firstName === ''} style={validateEmail(email) && firstName != '' ? styles.newsletter : styles.newsletterDisabled} onPress={()=>navigation.navigate('O2')}><Text style={styles.newsText}>Next</Text></Pressable>
   </View>
   )
 };
@@ -45,6 +50,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   newsletter: {
+    backgroundColor: 'black',
+    borderRadius: 10,
+  },
+  newsletterDisabled: {
     backgroundColor: 'grey',
     borderRadius: 10,
   },
