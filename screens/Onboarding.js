@@ -10,10 +10,12 @@ const Onboarding = ({ navigation }) => {
     <View style={styles.container}>
     {/* <Header></Header> */}
     {/* <Image style={styles.logo} source={require('../assets/little-lemon-logo.png')} /> */}
+    <Text style={styles.main}> Let us get to know you</Text>
     <TextInput value={firstName} placeholder="First Name" onChangeText={onChangeFirstName} style={styles.textInput}></TextInput>
     <TextInput value={lastName} placeholder="Last Name" onChangeText={onChangeLastName} style={styles.textInput}></TextInput>
     {/* <Text style={styles.lemon}>Little Lemon, your local Mediterranean bistro</Text> */}
     {/* <Pressable style={styles.newsletter} onPress={()=>navigation.navigate('S')}><Text style={styles.newsText}>Newsletter</Text></Pressable> */}
+    <Pressable style={styles.newsletter} onPress={()=>navigation.navigate('S')}><Text style={styles.newsText}>Next</Text></Pressable>
   </View>
   )
 };
@@ -24,6 +26,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  main: {
+    fontSize: 26,
+    fontWight: 'bold',
   },
   lemon: {
     fontWeight: 'bold',
@@ -55,6 +61,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 2,
+    marginBottom: '20%',
   },
 });
 
