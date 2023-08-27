@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, Header} from 'react-native';
 import {validateEmail} from '../utils/index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Onboarding = ({ navigation }) => {
 
@@ -8,6 +9,18 @@ const Onboarding = ({ navigation }) => {
 //   const [lastName, onChangeLastName] = React.useState('')
   const [email, onChangeEmail] = React.useState('')
 
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('my-key', value);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const onBoardingPress = () => {
+    storeData('profile', [firstName, email])
+    navigation.navigate('Home');
+  }
 
   return (
     <View style={styles.container}>
@@ -20,7 +33,7 @@ const Onboarding = ({ navigation }) => {
     <TextInput value={email} placeholder="Enter your email" onChangeText={onChangeEmail} style={styles.textInput}></TextInput>
     {/* <Text style={styles.lemon}>Little Lemon, your local Mediterranean bistro</Text> */}
     {/* <Pressable style={styles.newsletter} onPress={()=>navigation.navigate('S')}><Text style={styles.newsText}>Newsletter</Text></Pressable> */}
-    <Pressable disabled={!validateEmail(email) || firstName === ''} style={validateEmail(email) && firstName != '' ? styles.newsletter : styles.newsletterDisabled} onPress={()=>navigation.navigate('O2')}><Text style={styles.newsText}>Next</Text></Pressable>
+    <Pressable disabled={!validateEmail(email) || firstName === ''} style={validateEmail(email) && firstName != '' ? styles.newsletter : styles.newsletterDisabled} onPress={onBoardingPress}><Text style={styles.newsText}>Next</Text></Pressable>
   </View>
   )
 };
