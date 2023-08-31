@@ -1,11 +1,28 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, Header} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({ navigation }) => {
+
+  const getData = async (key) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  const test = async () => {
+    const data = await getData('user-profile')
+    console.log(data);
+    return data;
+  }
 
   return (
     <View style={styles.container}>
       <Text> Home Screen</Text>
+    <Pressable onPress={test}><Text style={styles.newsText}>test</Text></Pressable>
     </View>
   )
 };

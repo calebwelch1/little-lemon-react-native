@@ -9,16 +9,23 @@ const Onboarding = ({ navigation }) => {
 //   const [lastName, onChangeLastName] = React.useState('')
   const [email, onChangeEmail] = React.useState('')
 
-  const storeData = async (value) => {
+  const storeData = async (key, value) => {
     try {
-      await AsyncStorage.setItem('my-key', value);
+      const jsonValue = JSON.stringify(value);
+      console.log('storing', key, jsonValue);
+      await AsyncStorage.setItem(key, jsonValue);
     } catch (e) {
       // saving error
     }
   };
 
-  const onBoardingPress = () => {
-    storeData('profile', [firstName, email])
+  const onBoardingPress = async () => {
+    const profile = {
+        firstName: firstName,
+        email: email,
+    }
+
+    await storeData('user-profile', profile)
     navigation.navigate('Home');
   }
 
