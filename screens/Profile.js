@@ -1,63 +1,132 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, Pressable, Header} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Checkbox } from '@react-native-community/checkbox'
 
-const Profile = ({ navigation }) => {
-
+const Profile = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text> Profile Screen</Text>
+      <View style={styles.avatarRow}>
+        <Image source={require('../assets/Profile.png')} style={styles.avatar} />
+        <View style={styles.avatarButtons}>
+          <TouchableOpacity style={styles.avatarButton}>
+            <Text style={styles.buttonText}>Change</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.avatarButton}>
+            <Text style={styles.buttonText}>Remove</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <TextInput style={styles.input} placeholder="First Name" />
+      <TextInput style={styles.input} placeholder="Last Name" />
+      <TextInput style={styles.input} placeholder="Email" />
+      <TextInput style={styles.input} placeholder="Phone Number" />
+
+      <View style={styles.notificationSection}>
+        <View style={styles.notificationRow}>
+          <Checkbox />
+          <Text style={styles.notificationText}>Order Statuses</Text>
+        </View>
+        <View style={styles.notificationRow}>
+          <Checkbox />
+          <Text style={styles.notificationText}>Password Changes</Text>
+        </View>
+        <View style={styles.notificationRow}>
+          <Checkbox />
+          <Text style={styles.notificationText}>Special Offers</Text>
+        </View>
+        <View style={styles.notificationRow}>
+          <Checkbox />
+          <Text style={styles.notificationText}>Newsletter</Text>
+        </View>
+      </View>
+
+      <TouchableOpacity style={styles.logoutButton}>
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
+
+      <View style={styles.bottomButtons}>
+        <TouchableOpacity style={styles.bottomButton}>
+          <Text style={styles.buttonText}>Discard Changes</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bottomButton}>
+          <Text style={styles.buttonText}>Save Changes</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    padding: 20,
+  },
+  avatarRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    marginBottom: 20,
   },
-  main: {
-    fontSize: 26,
-    fontWight: 'bold',
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 20,
   },
-  lemon: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 30,
-    paddingLeft: 40,
-    paddingRight: 40,
-    marginBottom: 200,
+  avatarButtons: {
+    flexDirection: 'row',
   },
-  logo: {
-    height: 200,
-    width: 100,
-    resizeMode: 'contain',
+  avatarButton: {
+    backgroundColor: 'blue',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginLeft: 10,
   },
-  newsletter: {
-    backgroundColor: 'black',
-    borderRadius: 10,
+  buttonText: {
+    color: 'white',
   },
-  newsletterDisabled: {
-    backgroundColor: 'grey',
-    borderRadius: 10,
-  },
-  newsText: {
-    color: '#fff',
-    paddingLeft: 70,
-    paddingRight: 70,
-    fontSize: 20,
-  },
-  textInput: {
-    width: 250,
-    height: 30,
-    borderStyle: 'solid',
-    borderColor: 'black',
+  input: {
     borderWidth: 1,
-    borderRadius: 2,
-    marginBottom: '20%',
+    borderColor: 'gray',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  notificationSection: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  notificationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  notificationText: {
+    marginLeft: 10,
+  },
+  logoutButton: {
+    backgroundColor: 'red',
+    width: '80%',
+    paddingVertical: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  bottomButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  bottomButton: {
+    backgroundColor: 'green',
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: 10,
   },
 });
-
 
 export default Profile;

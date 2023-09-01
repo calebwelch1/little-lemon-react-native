@@ -15,9 +15,9 @@ import {
   getMenuItems,
   saveMenuItems,
   filterByQueryAndCategories,
-} from './database';
-import Filters from './components/Filters';
-import { getSectionListData, useUpdateEffect } from './utils';
+} from '../database';
+import Filters from '../components/Filters';
+import { getSectionListData, useUpdateEffect } from '../utils';
 
 const API_URL =
   'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu-items-by-category.json';
@@ -30,7 +30,7 @@ const Item = ({ title, price }) => (
   </View>
 );
 
-export default function MenuScreen() {
+export default function Menu() {
   const [data, setData] = useState([]);
   const [searchBarText, setSearchBarText] = useState('');
   const [query, setQuery] = useState('');

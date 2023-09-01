@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, Pressable, Header} from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({ navigation }) => {
@@ -19,62 +19,67 @@ const Home = ({ navigation }) => {
     return data;
   }
 
+  const handleMenuPress = () => {
+    navigation.navigate('Menu');
+  }
+
+  const handleProfilePress = () => {
+    navigation.navigate('Profile');
+  }
+
   return (
     <View style={styles.container}>
-      <Text> Home Screen</Text>
-    <Pressable onPress={test}><Text style={styles.newsText}>test</Text></Pressable>
-    </View>
+    <TouchableOpacity style={styles.topHalf} onPress={handleMenuPress}>
+    <ImageBackground source={require('../assets/grilled_fish.png')} style={styles.imageBackground}>
+      <Text style={styles.halfText}>Menu</Text>
+      </ImageBackground>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.bottomHalf} onPress={handleProfilePress}>
+      <Text style={styles.halfText}>Profile</Text>
+    </TouchableOpacity>
+  </View>
   )
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  main: {
-    fontSize: 26,
-    fontWight: 'bold',
-  },
-  lemon: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 30,
-    paddingLeft: 40,
-    paddingRight: 40,
-    marginBottom: 200,
-  },
-  logo: {
-    height: 200,
-    width: 100,
-    resizeMode: 'contain',
-  },
-  newsletter: {
-    backgroundColor: 'black',
-    borderRadius: 10,
-  },
-  newsletterDisabled: {
-    backgroundColor: 'grey',
-    borderRadius: 10,
-  },
-  newsText: {
-    color: '#fff',
-    paddingLeft: 70,
-    paddingRight: 70,
-    fontSize: 20,
-  },
-  textInput: {
-    width: 250,
-    height: 30,
-    borderStyle: 'solid',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 2,
-    marginBottom: '20%',
-  },
-});
+    container: {
+      flex: 1,
+      flexDirection: 'column',
+    },
+    topHalf: {
+      flex: 1,
+      backgroundColor: 'blue',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    bottomHalf: {
+      flex: 1,
+      backgroundColor: 'green',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    halfText: {
+      fontSize: 24,
+      color: 'white',
+      textAlign: 'center',
+      marginLeft: '41%',
+      marginRight: '41%',
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+    image: {
+      width: 100,
+      height: 100,
+      resizeMode: 'contain',
+    },
+    imageBackground: {
+      flex: 1,
+      resizeMode: 'cover',
+      justifyContent: 'center',
+      alignItems: 'center',
+      opacity: 50,
+    },
+  });
 
 
 export default Home;

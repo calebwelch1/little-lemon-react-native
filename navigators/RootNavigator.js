@@ -6,6 +6,8 @@ import SubscribeScreen from "../screens/SubscribeScreen";
 import Onboarding from '../screens/Onboarding';
 import Profile from '../screens/Profile';
 import Home from '../screens/Home';
+import Splash from '../screens/Splash';
+import Menu from '../screens/MenuScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -34,6 +36,11 @@ const RootNavigator = () => {
           component={WelcomeScreen}
           /> */}
           <Stack.Screen
+          // options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
+          name="Splash"
+          component={Splash}
+          />
+          <Stack.Screen
           // options={{
           //   title:'Onboarding',
           //   headerTitleAlign: 'center',
@@ -47,8 +54,13 @@ const RootNavigator = () => {
           />
           <Stack.Screen
           options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
-          name="P"
+          name="Profile"
           component={Profile}
+          />
+          <Stack.Screen
+          options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
+          name="Menu"
+          component={Menu}
           />
           <Stack.Screen
           options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
