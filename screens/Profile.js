@@ -1,15 +1,60 @@
 import * as React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { Checkbox } from '@react-native-community/checkbox'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from 'expo-checkbox';
 
 const Profile = ({navigation}) => {
+  const [firstName, setFirstName] = React.useState('')
+  const [lastName, setLastName] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [phone, setPhone] = React.useState('')
   const [orderCheckBox, setOrderCheckBox] = useState(false)
   const [passwordCheckBox, setPasswordCheckBox] = useState(false)
   const [offerCheckBox, setOfferCheckBox] = useState(false)
   const [newsCheckBox, setNewsCheckBox] = useState(false)
 
+  const getData = async (key) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  const storeData = async (key, value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      console.log('storing', key, jsonValue);
+      await AsyncStorage.setItem(key, jsonValue);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const onSavePress = async () => {
+    const profile = {
+        firstName: firstName,
+        email: email,
+    }
+
+    await storeData('user-profile', profile)
+    // TODO: alert info saved!
+  }
+
+  useEffect( () => {
+     const loadProfile = async () => {
+      const data = await getData('user-profile')
+      console.log(data);
+      if (data != null ) {
+        setFirstName(data.firstName);
+        setEmail(data.email);
+      }
+     }
+     loadProfile();
+  })
 
   return (
     <View style={styles.container}>
@@ -25,10 +70,10 @@ const Profile = ({navigation}) => {
         </View>
       </View>
 
-      <TextInput style={styles.input} placeholder="First Name" />
-      <TextInput style={styles.input} placeholder="Last Name" />
-      <TextInput style={styles.input} placeholder="Email" />
-      <TextInput style={styles.input} placeholder="Phone Number" />
+      <TextInput style={styles.input} placeholder={firstName} />
+      <TextInput style={styles.input} placeholder={lastName} />
+      <TextInput style={styles.input} placeholder={email} />
+      <TextInput style={styles.input} placeholder={phone} />
 
       <View style={styles.notificationSection}>
         <View style={styles.notificationRow}>
