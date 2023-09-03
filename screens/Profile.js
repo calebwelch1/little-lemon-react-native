@@ -38,10 +38,28 @@ const Profile = ({navigation}) => {
     const profile = {
         firstName: firstName,
         email: email,
+        lastName,
+        email,
+        phone,
+        orderCheckBox,
+        passwordCheckBox,
+        offerCheckBox,
+        newsCheckBox,
     }
 
     await storeData('user-profile', profile)
     // TODO: alert info saved!
+  }
+
+  const onLogoutPress = async () => {
+      try {
+        await AsyncStorage.removeItem('user-profile')
+      } catch(e) {
+        // remove error
+      }
+    
+      console.log('Done.')
+    navigation.navigate('O')
   }
 
   useEffect( () => {
@@ -111,7 +129,7 @@ const Profile = ({navigation}) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.logoutButton}>
+      <TouchableOpacity style={styles.logoutButton} onPress={onLogoutPress}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
 
@@ -119,7 +137,7 @@ const Profile = ({navigation}) => {
         <TouchableOpacity style={styles.bottomButton}>
           <Text style={styles.buttonText}>Discard Changes</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.bottomButton}>
+        <TouchableOpacity style={styles.bottomButton} onPress={onSavePress}>
           <Text style={styles.buttonText}>Save Changes</Text>
         </TouchableOpacity>
       </View>
