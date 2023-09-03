@@ -1,8 +1,16 @@
 import * as React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { Checkbox } from '@react-native-community/checkbox'
+import { useState } from 'react';
+// import { Checkbox } from '@react-native-community/checkbox'
+import CheckBox from 'expo-checkbox';
 
 const Profile = ({navigation}) => {
+  const [orderCheckBox, setOrderCheckBox] = useState(false)
+  const [passwordCheckBox, setPasswordCheckBox] = useState(false)
+  const [offerCheckBox, setOfferCheckBox] = useState(false)
+  const [newsCheckBox, setNewsCheckBox] = useState(false)
+
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarRow}>
@@ -24,19 +32,36 @@ const Profile = ({navigation}) => {
 
       <View style={styles.notificationSection}>
         <View style={styles.notificationRow}>
-          <Checkbox />
+           <CheckBox
+          disabled={false}
+          value={orderCheckBox}
+          onValueChange={(newValue) => setOrderCheckBox(newValue)}
+          // onValueChange={setOrderCheckBox(!orderCheckBox)}
+          />
           <Text style={styles.notificationText}>Order Statuses</Text>
         </View>
         <View style={styles.notificationRow}>
-          <Checkbox />
+           <CheckBox
+          disabled={false}
+          value={passwordCheckBox}
+          onValueChange={(newValue) => setPasswordCheckBox(newValue)}
+          />
           <Text style={styles.notificationText}>Password Changes</Text>
         </View>
         <View style={styles.notificationRow}>
-          <Checkbox />
+           <CheckBox
+          disabled={false}
+          value={offerCheckBox}
+          onValueChange={(newValue) => setOfferCheckBox(newValue)}
+          />
           <Text style={styles.notificationText}>Special Offers</Text>
         </View>
         <View style={styles.notificationRow}>
-          <Checkbox />
+           <CheckBox
+          disabled={false}
+          value={newsCheckBox}
+          onValueChange={(newValue) => setNewsCheckBox(newValue)}
+          />
           <Text style={styles.notificationText}>Newsletter</Text>
         </View>
       </View>
