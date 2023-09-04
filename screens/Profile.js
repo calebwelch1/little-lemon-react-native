@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Pressable} from 'react-native';
 import { useState, useEffect } from 'react';
 import {validateEmail} from '../utils/index';
 // import { Checkbox } from '@react-native-community/checkbox'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from 'expo-checkbox';
+import * as ImagePicker from 'expo-image-picker';
 
 const Profile = ({navigation}) => {
   const [firstName, setFirstName] = React.useState('')
@@ -17,6 +18,23 @@ const Profile = ({navigation}) => {
   const [passwordCheckBox, setPasswordCheckBox] = useState(false)
   const [offerCheckBox, setOfferCheckBox] = useState(false)
   const [newsCheckBox, setNewsCheckBox] = useState(false)
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const getData = async (key) => {
     try {
@@ -105,20 +123,23 @@ const Profile = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatarRow}>
-        {profileImage === '' ? (
-        <View style={styles.textAvatar}>
+        
+        { !image && <View style={styles.textAvatar}>
         <Text style={{color: 'white', marginTop: '30%', marginLeft: '30%'}} >{initials()}</Text>
         </View>
-        ) : (
-        <Image source={require('../assets/Profile.png')} style={styles.avatar} />
-        ) }
+        }
+        { image && <Image source={{ uri: image }} style={styles.avatar}/>}
+        {/* {/* // ) : (
+        // <Image source={require('../assets/Profile.png')} style={styles.avatar} />
+        // ''
+        // ) } */}
         <View style={styles.avatarButtons}>
-          <TouchableOpacity style={styles.avatarButton}>
+          <Pressable style={styles.avatarButton} onPress={pickImage}>
             <Text style={styles.buttonText}>Change</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.avatarButton}>
+          </Pressable>
+          <Pressable style={styles.avatarButton} onPress={() => setImage(null)}>
             <Text style={styles.buttonText}>Remove</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
       <Text>First Name</Text>
