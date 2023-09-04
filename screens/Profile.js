@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useState, useEffect } from 'react';
+import {validateEmail} from '../utils/index';
 // import { Checkbox } from '@react-native-community/checkbox'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from 'expo-checkbox';
 
 const Profile = ({navigation}) => {
   const [firstName, setFirstName] = React.useState('')
+  const [loaded, setLoaded] = React.useState(false)
+  const [profileImage, setProfileImage] = React.useState('')
   const [lastName, setLastName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [phone, setPhone] = React.useState('')
@@ -62,6 +65,28 @@ const Profile = ({navigation}) => {
     navigation.navigate('O')
   }
 
+  const validatePhone = (num) => {
+    if (num.length === 0) {
+      return true
+    }
+    else if (num.length === 10) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
+  const initials = () => {
+    if (lastName === '') {
+      return `${firstName[0]}`
+    }
+    else {
+      return `${firstName[0]}${lastName[0]}`
+    }
+    // return `${firstName[0]} ${ lastName !== undefined ? lastName[0] : ''}`
+  }
+
   useEffect( () => {
      const loadProfile = async () => {
       const data = await getData('user-profile')
@@ -70,14 +95,23 @@ const Profile = ({navigation}) => {
         setFirstName(data.firstName);
         setEmail(data.email);
       }
+      setLoaded(true);
      }
+     if (loaded === false) {
      loadProfile();
+     }
   })
 
   return (
     <View style={styles.container}>
       <View style={styles.avatarRow}>
+        {profileImage === '' ? (
+        <View style={styles.textAvatar}>
+        <Text style={{color: 'white', marginTop: '30%', marginLeft: '30%'}} >{initials()}</Text>
+        </View>
+        ) : (
         <Image source={require('../assets/Profile.png')} style={styles.avatar} />
+        ) }
         <View style={styles.avatarButtons}>
           <TouchableOpacity style={styles.avatarButton}>
             <Text style={styles.buttonText}>Change</Text>
@@ -87,11 +121,14 @@ const Profile = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
-
-      <TextInput style={styles.input} placeholder={firstName} />
-      <TextInput style={styles.input} placeholder={lastName} />
-      <TextInput style={styles.input} placeholder={email} />
-      <TextInput style={styles.input} placeholder={phone} />
+      <Text>First Name</Text>
+      <TextInput style={styles.input} value={firstName} onChangeText={setFirstName}/>
+      <Text>Last Name</Text>
+      <TextInput style={styles.input} value={lastName} onChangeText={setLastName}/>
+      <Text>Email</Text>
+      <TextInput style={styles.input} value={email} onChangeText={setEmail}/>
+      <Text>Phone Number</Text>
+      <TextInput style={styles.input} value={phone} onChangeText={setPhone}/>
 
       <View style={styles.notificationSection}>
         <View style={styles.notificationRow}>
@@ -137,7 +174,7 @@ const Profile = ({navigation}) => {
         <TouchableOpacity style={styles.bottomButton}>
           <Text style={styles.buttonText}>Discard Changes</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.bottomButton} onPress={onSavePress}>
+        <TouchableOpacity style={!validateEmail(email) || validatePhone(phone) ? styles.bottomButton : styles.bottomButtonDisabled} disabled={!validateEmail(email) || !validatePhone(phone)} onPress={onSavePress}>
           <Text style={styles.buttonText}>Save Changes</Text>
         </TouchableOpacity>
       </View>
@@ -160,6 +197,15 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     marginRight: 20,
+  },
+  textAvatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 40,
+    marginRight: 20,
+    backgroundColor: 'grey',
+    color: 'white',
+    fontSize: 20,
   },
   avatarButtons: {
     flexDirection: 'row',
@@ -209,6 +255,14 @@ const styles = StyleSheet.create({
   },
   bottomButton: {
     backgroundColor: 'green',
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: 10,
+  },
+  bottomButtonDisabled: {
+    backgroundColor: 'grey',
     flex: 1,
     paddingVertical: 10,
     alignItems: 'center',
