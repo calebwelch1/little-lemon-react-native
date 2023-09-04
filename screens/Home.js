@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
     topHalf: {
       flex: 1,
-      backgroundColor: 'blue',
+      backgroundColor: 'black',
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     halfText: {
-      fontSize: 24,
+      fontSize: 54,
       color: 'white',
       textAlign: 'center',
-      marginLeft: '41%',
-      marginRight: '41%',
+      marginLeft: '31%',
+      marginRight: '31%',
       paddingLeft: 0,
       paddingRight: 0,
     },

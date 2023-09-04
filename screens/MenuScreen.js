@@ -20,7 +20,8 @@ import Filters from '../components/Filters';
 import { getSectionListData, useUpdateEffect } from '../utils';
 
 const API_URL =
-  'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu-items-by-category.json';
+'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json';
+  // 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu-items-by-category.json';
 const sections = ['Appetizers', 'Salads', 'Beverages'];
 
 const Item = ({ title, price }) => (
@@ -47,11 +48,17 @@ export default function Menu() {
 
       let before = json.menu;
 
-      const menuItems = before.map((item) => {
-        item.key = item.category.title;
-        delete item["category"];
-        return item;
-      });
+      console.log(before);
+      const menuItems = before.map((item, index) => ({
+        ...item,
+        id: index + 1,
+      }));
+      console.log('after', menuItems);
+      // const menuItems = before.map((item) => {
+      //   item.key = item.category.title;
+      //   delete item["category"];
+      //   return item;
+      // });
 
       return menuItems;
 
@@ -130,7 +137,7 @@ export default function Menu() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Searchbar
+      {/* <Searchbar
         placeholder="Search"
         placeholderTextColor="white"
         onChangeText={handleSearchChange}
@@ -139,12 +146,12 @@ export default function Menu() {
         iconColor="white"
         inputStyle={{ color: 'white' }}
         elevation={0}
-      />
-      <Filters
+      /> */}
+      {/* <Filters
         selections={filterSelections}
         onChange={handleFiltersChange}
         sections={sections}
-      />
+      /> */}
       <SectionList
         style={styles.sectionList}
         sections={data}
