@@ -7,6 +7,8 @@ import {
   SafeAreaView,
   StatusBar,
   Alert,
+  FlatList,
+  Image,
 } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import debounce from 'lodash.debounce';
@@ -18,6 +20,7 @@ import {
 } from '../database';
 import Filters from '../components/Filters';
 import { getSectionListData, useUpdateEffect } from '../utils';
+import grilledFish from '../assets/grilledFish.jpg'
 
 const API_URL =
 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json';
@@ -41,6 +44,7 @@ export default function Menu() {
 
   const fetchData = async() => {
     // 1. Implement this function
+    console.log('fetching')
     try {
       const response = await fetch(API_URL);
       
@@ -81,14 +85,35 @@ export default function Menu() {
         // The application only fetches the menu data once from a remote URL
         // and then stores it into a SQLite database.
         // After that, every application restart loads the menu from the database
+        console.log('before fetch');
         if (!menuItems.length) {
-          const menuItems = await fetchData();
-          saveMenuItems(menuItems);
+          let menuItems = await fetchData();
+          const transformedData = menuItems.map(item => ({
+            category: item.category,
+            description: item.description,
+            id: item.id,
+            image: item.image,
+            name: item.name,
+            price: item.price
+          }));
+          saveMenuItems(transformedData);
         }
+        menuItems = await fetchData();
+        const transformedData = menuItems.map(item => ({
+          category: item.category,
+          description: item.description,
+          id: item.id,
+          image: item.image,
+          name: item.name,
+          price: item.price
+        }));
+        console.log('this is menu before save:', transformedData);
+        saveMenuItems(transformedData);
 
-        const sectionListData = getSectionListData(menuItems);
+        // const sectionListData = getSectionListData(menuItems);
         // console.log('SectionlistData--------', sectionListData[3].data);
-        setData(sectionListData);
+        // setData(sectionListData);
+        setData(transformedData);
       } catch (e) {
         // Handle error
         Alert.alert(e.message);
@@ -96,27 +121,27 @@ export default function Menu() {
     })();
   }, []);
 
-  useUpdateEffect(() => {
-    (async () => {
-      const activeCategories = sections.filter((s, i) => {
-        // If all filters are deselected, all categories are active
-        if (filterSelections.every((item) => item === false)) {
-          return true;
-        }
-        return filterSelections[i];
-      });
-      try {
-        const menuItems = await filterByQueryAndCategories(
-          query,
-          activeCategories
-        );
-        const sectionListData = getSectionListData(menuItems);
-        setData(sectionListData);
-      } catch (e) {
-        Alert.alert(e.message);
-      }
-    })();
-  }, [filterSelections, query]);
+  // useUpdateEffect(() => {
+  //   (async () => {
+  //     const activeCategories = sections.filter((s, i) => {
+  //       // If all filters are deselected, all categories are active
+  //       if (filterSelections.every((item) => item === false)) {
+  //         return true;
+  //       }
+  //       return filterSelections[i];
+  //     });
+  //     try {
+  //       const menuItems = await filterByQueryAndCategories(
+  //         query,
+  //         activeCategories
+  //       );
+  //       const sectionListData = getSectionListData(menuItems);
+  //       setData(sectionListData);
+  //     } catch (e) {
+  //       Alert.alert(e.message);
+  //     }
+  //   })();
+  // }, [filterSelections, query]);
 
   const lookup = useCallback((q) => {
     setQuery(q);
@@ -133,6 +158,23 @@ export default function Menu() {
     const arrayCopy = [...filterSelections];
     arrayCopy[index] = !filterSelections[index];
     setFilterSelections(arrayCopy);
+  };
+
+  const MenuItem = ({ item }) => {
+    return (
+      <View style={styles.menuItemContainer}>
+        <View style={styles.menuItemInfo}>
+          {/* <Text style={styles.title}>{JSON.stringify(item)}</Text> */}
+          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.description}>{item.description}</Text>
+          <Text style={styles.price}>Price: ${item.price}</Text>
+        </View>
+        <Image source={item.image.replace(/^"(.*)"$/, '$1').replace(/\.[^/.]+$/, '')} style={styles.image} />
+        {/* <Image source={require(`../assets/${item.image}`)} style={styles.image} /> */}
+        {/* const imageNameWithoutExtension = imageName.replace(/\.[^/.]+$/, ""); */}
+        {/* <Text>{item.image.replace(/\.[^/.]+$/, "")}</Text> */}
+      </View>
+    );
   };
 
   return (
@@ -152,7 +194,7 @@ export default function Menu() {
         onChange={handleFiltersChange}
         sections={sections}
       /> */}
-      <SectionList
+      {/* <SectionList
         style={styles.sectionList}
         sections={data}
         keyExtractor={(item) => item.id}
@@ -162,6 +204,11 @@ export default function Menu() {
         renderSectionHeader={({ section: { title } }) => (
           <Text style={styles.header}>{title}</Text>
         )}
+      /> */}
+         <FlatList
+        data={data}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <MenuItem item={item} />}
       />
       {/* <View><Text>{[data]}</Text></View> */}
     </SafeAreaView>
@@ -198,5 +245,28 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: 'white',
+  },
+  menuItemContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  menuItemInfo: {
+    flex: 4,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  description: {
+    marginBottom: 5,
+  },
+  price: {
+    fontWeight: 'bold',
+  },
+  image: {
+    flex: 1,
+    width: '20%',
+    marginLeft: 10,
   },
 });

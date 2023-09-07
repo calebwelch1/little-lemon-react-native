@@ -62,7 +62,8 @@ export async function getMenuItems() {
 //   }
 
 export function saveMenuItems(menuItems) {
-  let id = 0;
+  // let id = 0;
+  console.log('menuitems in database:', menuItems);
   db.transaction((tx) => {
     try {
       tx.executeSql(
