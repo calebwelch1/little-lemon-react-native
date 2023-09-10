@@ -382,6 +382,12 @@ const styles = StyleSheet.create({
   heroContent: {
     flex: 1,
   },
+  searchBar: {
+    marginTop: 15,
+    backgroundColor: "#fff",
+    shadowRadius: 0,
+    shadowOpacity: 0,
+  },
   heroImage: {
     width: 100,
     height: 100,
