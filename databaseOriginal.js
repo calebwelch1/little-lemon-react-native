@@ -15,7 +15,7 @@ export async function createTable() {
     );
   });
 }
-name price description image category
+// name price description image category
 
 export async function getMenuItems() {
   return new Promise((resolve) => {
