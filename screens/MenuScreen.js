@@ -24,7 +24,7 @@ import { getSectionListData, useUpdateEffect } from '../utils/utils';
 const API_URL =
 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json';
   // 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu-items-by-category.json';
-const sections = ['Appetizers', 'Salads', 'Beverages'];
+const sections = ['starters', 'mains', 'dessserts'];
 
 const Item = ({ title, price }) => (
   <View style={styles.item}>
@@ -75,6 +75,8 @@ export default function Menu() {
   //   return [];
   // }
 
+  
+
   const fetchData = async () => {
     try {
       const response = await fetch(API_URL);
@@ -114,6 +116,33 @@ export default function Menu() {
       }
     })();
   }, []);
+
+  // useUpdateEffect(() => {
+  //   (async () => {
+  //     const activeCategories = sections.filter((s, i) => {
+  //       if (filterSelections.every(item => item === false)) {
+  //         return true;
+  //       }
+  //       return filterSelections[i];
+  //     });
+  //     try {
+  //       const menuItems = await filterByQueryAndCategories(
+  //         query,
+  //         activeCategories
+  //       );
+  //       const sectionListData = getSectionListData(menuItems);
+  //       setData(sectionListData);
+  //     } catch (e) {
+  //       Alert.alert(e.message);
+  //     }
+  //   })();
+  // }, [filterSelections, query]);
+
+  // const lookup = useCallback(q => {
+  //   setQuery(q);
+  // }, []);
+
+  // const debouncedLookup = useMemo(() => debounce(lookup, 500), [lookup]);
 
   useUpdateEffect(() => {
     (async () => {
@@ -247,39 +276,39 @@ export default function Menu() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Searchbar
-        placeholder="Search"
-        placeholderTextColor="white"
-        onChangeText={handleSearchChange}
-        value={searchBarText}
-        style={styles.searchBar}
-        iconColor="white"
-        inputStyle={{ color: 'white' }}
-        elevation={0}
-      /> */}
-      {/* <Filters
+            <View style={styles.heroSection}>
+        <Text style={styles.heroHeader}>Little Lemon</Text>
+        <View style={styles.heroBody}>
+          <View style={styles.heroContent}>
+            <Text style={styles.heroHeader2}>Chicago</Text>
+            <Text style={styles.heroText}>
+              We are a family owned Mediterranean restaurant, focused on
+              traditional recipes served with a modern twist.
+            </Text>
+          </View>
+          <Image
+            style={styles.heroImage}
+            source={require("../assets/grilledFish.jpg")}
+            accessible={true}
+            accessibilityLabel={"Little Lemon Food"}
+          />
+        </View>
+        <Searchbar
+          placeholder="Search"
+          placeholderTextColor="#333333"
+          onChangeText={handleSearchChange}
+          value={searchBarText}
+          style={styles.searchBar}
+          iconColor="#333333"
+          inputStyle={{ color: "#333333" }}
+          elevation={0}
+        />
+         </View>
+      <Filters
         selections={filterSelections}
         onChange={handleFiltersChange}
         sections={sections}
-      /> */}
-      {/* <SectionList
-        style={styles.sectionList}
-        sections={data}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Item title={item.title} price={item.price} />
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.header}>{title}</Text>
-        )}
-      /> */}
-         {/* <FlatList
-        data={data}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <MenuItem item={item} />}
-      /> */}
-      
-      {/* <View><Text>{[data]}</Text></View> */}
+      />
       <SectionList
         style={styles.sectionList}
         sections={data}
@@ -326,6 +355,37 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     color: '#FBDABB',
     backgroundColor: '#495E57',
+  },
+  heroSection: {
+    backgroundColor: "#495e57",
+    padding: 15,
+  },
+  heroHeader: {
+    color: "#f4ce14",
+    fontSize: 54,
+    fontFamily: "MarkaziText-Medium",
+  },
+  heroHeader2: {
+    color: "#fff",
+    fontSize: 30,
+    fontFamily: "MarkaziText-Medium",
+  },
+  heroText: {
+    color: "#fff",
+    fontFamily: "Karla-Medium",
+    fontSize: 14,
+  },
+  heroBody: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  heroContent: {
+    flex: 1,
+  },
+  heroImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 12,
   },
   title: {
     fontSize: 20,
